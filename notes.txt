@@ -1,0 +1,143 @@
+//wait for DOM to fully load before running JS:
+https://www.w3schools.com/js/js_htmldom_eventlistener.asp
+
+// create variables that pull the data to the div:
+https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
+
+structure:
+
+- fetch()
+- .then()
+- .then()
+- .catch()
+
+Example reference:
+(from launchcode lesson)
+const div = document.getElementById("weather-conditions");
+
+div.innerHTML = `
+    <ul>
+        <li>Temperature: ${json.temp}°F</li>
+        <li>Wind Speed: ${json.windSpeed} mph</li>
+        <li>Status: ${json.status}</li>
+        <li>Chance of Precipitation: ${json.chanceOfPrecipitation}%</li>
+    </ul>
+`;
+
+>>> [] when the json data is delivered as an array, we have to access it using the index method:
+>>> {} when the json data is delivered as objects we access it using .propertyName
+read more : https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON
+
+
+-
+Note that just like response bodies, request bodies are streams, 
+and making the request reads the stream, so if a request contains a body, you can't make it twice.
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+-
+
+
+NOTES
+
+
+The .json() method of the Response object extracts the data from the response and converts it into a 
+JavaScript object (or array) that you can work with.
+
+"Note that despite the method being named json(), the result is not JSON but is instead the result of taking 
+JSON as input and parsing it to produce a JavaScript object."
+- https://developer.mozilla.org/en-US/docs/Web/API/Response/json
+
+example:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Launch Status</title>
+  <script src="script.js" defer></script>
+</head>
+<body>
+   <h1>Launch Status</h1>
+   <h3>Weather Conditions</h3>
+   <div id="weather-conditions">
+       <!-- TODO: dynamically add HTML about weather using data from API -->
+   </div>
+</body>
+</html>
+
+// Wait for the page to load
+window.addEventListener("load", function () {
+* https://www.w3schools.com/js/js_htmldom_eventlistener.asp
+
+// Make the GET request   
+(from launchcode lesson):
+
+fetch("https://handlers.education.launchcode.org/static/weather.json")
+       .then(function (response) {
+           // Convert the response to JSON
+           return response.json();
+      })
+       .then(function (json) {
+           console.log(json); // Log the JSON data
+       })
+       .catch(function (error) {
+           console.error("Error fetching the data:", error);
+       });
+});
+
+
+=====================================================================
+with weather app example / lesson, this was added to script.js:
+
+const div = document.getElementById("weather-conditions");
+
+// Add HTML that includes the JSON data
+div.innerHTML = `
+    <ul>
+        <li>Temperature: ${json.temp}°F</li>
+        <li>Wind Speed: ${json.windSpeed} mph</li>
+        <li>Status: ${json.status}</li>
+        <li>Chance of Precipitation: ${json.chanceOfPrecipitation}%</li>
+    </ul>
+`;
+
+===
+How it Works:
+
+1
+Select the DOM Element:
+The getElementById method selects the<div>element with the ID weather-conditions. 
+This is where we’ll insert the weather data.
+
+2
+Insert the Data:
+The innerHTML property is used to define the content of the <div>. 
+It includes an unordered list (<ul>) with the weather data dynamically inserted using template literals (${}).
+
+3
+Display the Data:
+When this code runs, the weather data from the JSON object is 
+added to the <div>, and the page updates automatically.
+
+=====================================================================
+
+Breaking Down the .json() Method
+
+1
+Fetch the Data:
+The fetch function sends a GET request to the specified API URL.
+
+2
+Handle the Response:
+The .then() method processes the Response object returned by fetch. It calls the .json() method to extract the JSON data.
+
+3
+Log the Data:
+Inside the second .then(), the extracted JSON object is logged to the console. This gives us access to the actual weather data returned by the API.
+
+4
+Error Handling:
+The .catch() method ensures that any errors encountered during the fetch process are logged to the console.
+
+=========================================================================
+
